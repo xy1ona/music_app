@@ -14,7 +14,8 @@ export function getRecommend() {
 
 export function getDiscList() {
   const url = 'api/getDiscList'
-
+  // const  url ='https://c.y.qq.com/splcloud/fcgi-bin/p.fcg'
+console.log(url)
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',
     hostUin: 0,
@@ -29,5 +30,7 @@ export function getDiscList() {
 
   return axios.get(url, {
     params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
   })
 }
