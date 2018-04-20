@@ -1,6 +1,6 @@
 <template>
   <div class="recommend" ref="recommend">
-    <!--<scroll ref="scroll" class="recommend-content">-->
+    <div ref="scroll" class="recommend-content">
       <div>
         <div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
           <slider>
@@ -16,7 +16,7 @@
           <ul>
             <li  v-for="item in discList" class="item">
               <div class="icon">
-                <img width="60" height="60" v-lazy="item.imgurl">
+                <img width="60" height="60" :src="item.imgurl">
               </div>
               <div class="text">
                 <h2 class="name" v-html="item.creator.name"></h2>
@@ -29,7 +29,7 @@
       <div class="loading-container">
         <!--<loading></loading>-->
       </div>
-    <!--</scroll>-->
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -39,6 +39,7 @@
   import Slider from 'base/slider/slider'
   import {getRecommend, getDiscList} from 'api/recommend.js'
   import {ERR_OK} from "api/config";
+  import Vue from 'vue'
   export default {
     data() {
       return {
@@ -53,6 +54,10 @@
     created() {
       this._getRecommend()
       this._getDiscList()
+      this.$http.get('api/getNewsList').then(res=>{
+        console.log('测试vue-resource',res.data)
+      },(err) => {
+      })
     },
     methods: {
       _getRecommend() {
@@ -60,15 +65,13 @@
           if(res.code === ERR_OK) {
             this.recommends = res.data.slider
           }else{
-
           }
         })
       },
       _getDiscList() {
         getDiscList().then(res=> {
-          console.log(res)
           if(res.code === ERR_OK) {
-            this.discList = res.data.songList
+            this.discList = res.data.list
           }
         })
       }

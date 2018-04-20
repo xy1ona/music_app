@@ -11,12 +11,17 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
 const express = require('express')
+var appData = require('../db.json')
+var getNewsList = appData.getNewsList
+var axios = require('axios')
 const app = express()
 var apiRoutes = express.Router()
 app.use('/api',apiRoutes)
 
+
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -28,8 +33,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   // these devServer options should be customized in /config/index.js
   devServer: {
     before(app) {
-      app.get('/getDiscList', function (req, res) {
-        var url = 'https://c.y.qq.com/splcloud/fcgi-bin/p.fcg'
+      app.get('/api/getNewsList', (req, res) => {
+        res.json({
+          errno: 0,
+          data: getNewsList
+        })
+      })
+      app.get('/api/getDiscList', function (req, res) {
+        var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         axios.get(url, {
           headers: {
             referer: 'https://c.y.qq.com/',
@@ -42,6 +53,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       })
+
     },
     clientLogLevel: 'warning',
     historyApiFallback: {

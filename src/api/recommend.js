@@ -3,7 +3,6 @@ import {commonParams, options} from "./config";
 import axios from 'axios'
 export function getRecommend() {
   const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-
   const data = Object.assign({},commonParams, {
     platform: 'h5',
     needNewCode: 1,
@@ -14,8 +13,6 @@ export function getRecommend() {
 
 export function getDiscList() {
   const url = 'api/getDiscList'
-  // const  url ='https://c.y.qq.com/splcloud/fcgi-bin/p.fcg'
-console.log(url)
   const data = Object.assign({}, commonParams, {
     platform: 'yqq',
     hostUin: 0,
@@ -27,7 +24,6 @@ console.log(url)
     rnd: Math.random(),
     format: 'json'
   })
-
   return axios.get(url, {
     params: data
   }).then(res => {
