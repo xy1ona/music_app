@@ -46,7 +46,6 @@
       return {
         recommends : [],
         discList : []
-
       }
     },
     components: {
